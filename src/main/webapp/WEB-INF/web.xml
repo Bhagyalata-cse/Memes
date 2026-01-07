@@ -1,0 +1,45 @@
+<web-app    xmlns="http://java.sun.com/xml/ns/javaee"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+            version="3.0">
+  <display-name>Archetype Created Web Application</display-name>
+  
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:application-*.xml</param-value>
+  </context-param>
+  <listener>
+    <listener-class>
+    org.springframework.web.context.ContextLoaderListener
+    </listener-class>
+  </listener>
+
+  <servlet>
+    <servlet-name>DispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- 配置初始化参数，读取Spring MVC的配置文件 -->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:spring-mvc.xml</param-value>
+    </init-param>
+    <multipart-config>
+      <!--该路径必须是一个已经存在的路劲-->
+      <location>C:\Users\ohouw\Desktop\Project\memes\src\main\webapp\tempFiles</location>
+      <!--单个文件（单个part）最大限度 单位字节-->
+      <max-file-size>5242880</max-file-size>
+      <!--整个请求最大限度（包括所有文件或者其他part） 单位字节-->
+      <max-request-size>10000000</max-request-size>
+      <!--设置文件缓存的临界点,超过则先保存到临时目录-->
+      <file-size-threshold>4194304</file-size-threshold>
+    </multipart-config>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DispatcherServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/static/*</url-pattern>
+  </servlet-mapping>
+</web-app>
