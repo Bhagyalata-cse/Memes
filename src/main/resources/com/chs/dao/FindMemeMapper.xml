@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chs.dao.FindMemeMapper">
+
+    <!-- resultMap 映射 -->
+    <resultMap id="findMemeResultMap" type="com.chs.domain.Meme">
+        <result column="Id" property="id"/>
+        <result column="user_Id" property="user_Id"/>
+        <result column="name" property="name"/>
+        <result column="introduction" property="introduction"/>
+        <result column="upload_time" property="upload_time"/>
+        <result column="views" property="views"/>
+    </resultMap>
+
+    <!-- 查询语句 -->
+    <select id="getMemeById" resultMap="findMemeResultMap">
+        SELECT Id, name,file, introduction, upload_time, user_Id, views FROM meme WHERE Id = #{id}
+    </select>
+    <!-- 根据 userId 查询该用户上传的所有表情包 -->
+    <select id="getMemeByUid" resultMap="findMemeResultMap">
+        SELECT Id, name,file, introduction, upload_time, user_Id, views FROM meme WHERE user_Id = #{userId}
+    </select>
+</mapper>

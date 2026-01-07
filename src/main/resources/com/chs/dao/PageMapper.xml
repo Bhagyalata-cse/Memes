@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chs.dao.PageMapper">
+
+    <select id="getMeme" resultType="com.chs.domain.Meme">
+        select * from meme where Id=#{id}
+    </select>
+
+    <select id="getUser" resultType="com.chs.domain.User">
+        select * from user where Id=#{user_Id}
+    </select>
+
+    <select id="favorite" resultType="java.lang.Boolean">
+        select exists(select * from favorite where user_Id=#{user_Id} and meme_Id=#{meme_Id})
+    </select>
+
+    <insert id="insertFavorite">
+        insert into favorite(user_Id,meme_Id) values (#{user_Id},#{meme_Id});
+    </insert>
+
+    <delete id="deleteFavorite">
+        delete from favorite where user_Id=#{user_Id} and meme_Id=#{meme_Id}
+    </delete>
+
+    <select id="findSimilar" resultType="java.lang.Integer">
+        select meme_Id
+        from (select * from tagowning where tagname in
+        <foreach item="tagName" index="index" collection="list" open="(" separator="," close=")">
+            #{tagName}
+        </foreach>) as tmp
+        group by meme_Id
+        order by count(*) desc
+    </select>
+    <select id="findSimilar2" resultType="java.lang.Integer">
+        select Id
+        from (select Id from meme where Id in
+        <foreach item="tagName" index="index" collection="list"
+                 open="(" separator="union all" close=")">
+        select Id from meme where name like concat('%',#{tagName},'%')
+        </foreach>) as tmp
+        group by Id
+        order by count(*) desc
+    </select>
+
+    <select id="getTagName" resultType="java.lang.String">
+        select tagname from tagowning
+        where meme_Id=#{meme_Id}
+    </select>
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chs.dao.FavoriteMapper">
+
+    <!-- resultMap 映射 -->
+    <resultMap id="favoriteResultMap" type="com.chs.domain.Favorite">
+        <result column="user_Id" property="userId"/>
+        <result column="meme_Id" property="memeId"/>
+    </resultMap>
+
+    <!-- 查询语句 -->
+    <select id="getFmemeByUid" resultMap="favoriteResultMap">
+        SELECT user_Id, meme_Id FROM favorite WHERE user_Id = #{userId}
+    </select>
+
+</mapper>

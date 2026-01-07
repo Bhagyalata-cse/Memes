@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chs.dao.MainMapper">
+    <select id="getMemes" resultType="com.chs.domain.Meme">
+        SELECT DISTINCT m.* FROM meme as m
+        LEFT JOIN tagowning as t ON m.id = t.meme_id
+        <where>
+            <if test="query != null and query != ''">
+                <choose>
+                    <when test="searchType == 'name'">
+                        m.name LIKE CONCAT('%', #{query}, '%')
+                    </when>
+                    <when test="searchType == 'tag'">
+                        t.tagname LIKE CONCAT('%', #{query}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+        <choose>
+            <when test="sortBy == 'newest'">
+                ORDER BY m.upload_time DESC
+            </when>
+            <when test="sortBy == 'oldest'">
+                ORDER BY m.upload_time ASC
+            </when>
+            <when test="sortBy == 'views'">
+                ORDER BY m.views DESC
+            </when>
+            <otherwise>
+                ORDER BY m.upload_time DESC
+            </otherwise>
+        </choose>
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="getMemeNumber" resultType="int">
+        SELECT COUNT(DISTINCT m.id) FROM meme as m
+        LEFT JOIN tagowning as t ON m.id = t.meme_id
+        <where>
+            <if test="query != null and query != ''">
+                <choose>
+                    <when test="searchType == 'name'">
+                        m.name LIKE CONCAT('%', #{query}, '%')
+                    </when>
+                    <when test="searchType == 'tag'">
+                        t.tagname LIKE CONCAT('%', #{query}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+    <update id="incrementViews">
+        UPDATE meme SET views = views + 1 WHERE Id = #{id}
+    </update>
+
+    <select id="getMemeById" resultType="com.chs.domain.Meme">
+        SELECT * FROM meme WHERE Id = #{id}
+    </select>
+
+    <select id="getTagByName" resultType="string">
+        SELECT tagname FROM tag WHERE tagname = #{tagName}
+    </select>
+
+    <insert id="insertTag">
+        INSERT INTO tag (tagname) VALUES (#{tagName})
+    </insert>
+
+    <insert id="addTagToMeme">
+        INSERT INTO tagowning (meme_Id, tagname)
+        VALUES (#{memeId}, #{tagName})
+    </insert>
+
+    <insert id="insertMeme" parameterType="com.chs.domain.Meme" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO meme (name, file, introduction, user_Id)
+        VALUES (#{name}, #{file}, #{introduction}, #{user_Id})
+    </insert>
+
+    <select id="getSuggestions" resultType="string">
+        SELECT tagname FROM tag
+        WHERE tagname LIKE #{query}
+        ORDER BY (SELECT COUNT(*) FROM tagowning WHERE tagname = tag.tagname) DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="getSearchSuggestions" resultType="string">
+        <choose>
+            <when test="type == 'name'">
+                SELECT DISTINCT name, views FROM meme
+                WHERE name LIKE CONCAT('%', #{query}, '%')
+                ORDER BY views DESC
+                LIMIT 5
+            </when>
+            <when test="type == 'tag'">
+                SELECT DISTINCT tagname FROM tag
+                WHERE tagname LIKE CONCAT('%', #{query}, '%')
+                LIMIT 5
+            </when>
+        </choose>
+    </select>
+</mapper>

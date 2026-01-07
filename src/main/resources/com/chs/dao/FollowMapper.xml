@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chs.dao.FollowMapper">
+
+    <!-- 获取当前登录用户所有关注的用户ID -->
+    <select id="getFollowee" resultType="com.chs.domain.Following">
+        SELECT followee
+        FROM following
+        WHERE follower = #{id}
+    </select>
+
+    <!-- 获取当前用户的关注数量 -->
+    <select id="getFolloweeNum" resultType="int">
+        SELECT COUNT(*)
+        FROM following
+        WHERE follower = #{id}
+    </select>
+
+    <!-- 获取当前用户所有粉丝的ID -->
+    <select id="getFollower" resultType="com.chs.domain.Following">
+        SELECT follower
+        FROM following
+        WHERE followee = #{id}
+    </select>
+
+    <!-- 获取当前用户粉丝数 -->
+    <select id="getFollowerNum" resultType="int">
+        SELECT COUNT(*)
+        FROM following
+        WHERE followee = #{id}
+    </select>
+    <!-- 添加关注 -->
+    <insert id="followUser">
+        INSERT INTO following (followee,follower,time)
+        VALUES (#{followeeId},#{followerId},NOW());
+    </insert>
+
+    <!-- 取消关注 -->
+    <delete id="unfollowUser">
+        DELETE FROM following
+        WHERE follower = #{followerId} AND followee = #{followeeId};
+    </delete>
+
+    <!-- 检查是否已关注 -->
+    <select id="isFollowing" resultType="int">
+        SELECT COUNT(*)
+        FROM following
+        WHERE follower = #{followerId} AND followee = #{followeeId}
+    </select>
+
+</mapper>
