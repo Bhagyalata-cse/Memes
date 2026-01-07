@@ -1,0 +1,51 @@
+.page-container{
+    margin-left: 20%;
+    display: grid;
+    grid-template-columns: 55% 45%;
+}
+.left{
+    display: grid;
+    grid-template-rows: 85% 10% 5%;
+    grid-row-gap: 5px;
+}
+.tags{
+    text-align: center;
+    padding: 5px 10px;
+    background-color: white;
+}
+.tags:hover{
+    background-color: lightgrey;
+}
+.down{
+    display: grid;
+    grid-template-columns: 75% 25%;
+    padding-right: 20%;
+}
+.down-left{
+    display: grid;
+    grid-template-columns: 20% 30% 50%;
+    place-items: center;
+    float: left;
+}
+.down-right{
+    display: grid;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    place-items: center;
+    height: 100%;
+}
+.button{
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 40px;
+    height: 40px;
+    font-size: 0;
+    cursor: pointer;
+    border-radius: 100%;
+}
+
+.download{
+    width: 75%;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid black;
+}

@@ -1,0 +1,25 @@
+.main{
+    padding-left: 20%;
+}
+.piece{
+    display: grid;
+    grid-template-columns: 5% 10%;
+    place-items: center;
+}
+.head{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+.pic{
+    width: 20%;
+}
+.time{
+    font-size: 3%;
+    color: gray;
+}
+.update-label{
+    font-size: 15px;
+    font-weight: bold;
+}

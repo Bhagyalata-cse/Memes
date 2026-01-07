@@ -1,0 +1,38 @@
+.head {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+.zone-container {
+    margin-left: 1%;
+    display: grid;
+    grid-template-columns: 10% 90%;
+    height: 400%;
+}
+
+.left {
+    overflow: auto;
+    text-align: center;
+}
+
+.right {
+    margin-left: 3%;
+}
+iframe{
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.zone-label{
+    font-size: 100%;
+    font-weight: bold;
+}
+.zone-button{
+    width: 90%;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
